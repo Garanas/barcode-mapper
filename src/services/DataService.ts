@@ -83,7 +83,7 @@ export class CsvService {
       const lowerCaseIdentifier = identifier.toLowerCase();
 
       // Check if the identifier contains the search term (case insensitive)
-      if (lowerCaseIdentifier === searchTerm || lowerCaseIdentifier.startsWith(searchTerm)) {
+      if (lowerCaseIdentifier === searchTerm || lowerCaseIdentifier.startsWith(searchTerm) || searchTerm.endsWith(lowerCaseIdentifier)) {
         console.log(`Match found: ${identifier}`);
         matches.set(identifier, data);
         matchCount++;
