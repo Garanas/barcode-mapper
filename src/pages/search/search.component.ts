@@ -1,18 +1,25 @@
-// src/app/search/search.component.ts
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+// src/app/search/search.component.ts (modified)
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { CsvService } from '../../services/DataService';
 import { TextFormatterPipe } from '../../pipes/TextFormatterPipe';
-import {KeyValuePipe} from '@angular/common';
+import { KeyValuePipe, NgClass } from '@angular/common';
+import { BarcodeDetectionService } from '../../services/BarcodeDetectionService';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [ReactiveFormsModule, KeyValuePipe, TextFormatterPipe],
+  imports: [ReactiveFormsModule, KeyValuePipe, TextFormatterPipe, NgClass],
   template: `
     <div class="max-w-md mx-auto my-5 p-6 bg-white rounded-lg shadow-md">
       <h2 class="text-xl font-bold mb-4 text-gray-800">Search Identifiers</h2>
+
+      <!-- Barcode Detection API support status -->
+      <div class="mb-3 p-2 rounded text-sm" [ngClass]="barcodeApiSupported ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'">
+        Barcode Detection API: {{ barcodeApiSupported ? 'Supported' : 'Not supported' }}
+      </div>
+
       <div class="mb-1">
         <input
           type="number"
@@ -79,13 +86,21 @@ export class SearchComponent implements OnInit {
   searchAttempted = false;
   headers: string[] = [];
   exactSearch = false;
+  barcodeApiSupported = false;
 
-  constructor(private csvService: CsvService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private csvService: CsvService,
+    private cdr: ChangeDetectorRef,
+    private barcodeService: BarcodeDetectionService
+  ) {}
 
   ngOnInit() {
+    // Check if Barcode Detection API is supported
+    this.barcodeApiSupported = this.barcodeService.isSupported();
+
     // Set up the debounce for the search input
     this.searchControl.valueChanges.pipe(
-      debounceTime(300), // 500ms delay
+      debounceTime(300), // 300ms delay
     ).subscribe(value => {
       const stringified  = value?.toString() || ''
       if (!stringified || stringified.trim().length < 3) {
