@@ -42,8 +42,8 @@ import { Subscription } from 'rxjs';
           type="button"
           (click)="backspace()"
           [class]="barcodeApiSupported ?
-              'px-3 py-2 flex items-center bg-orange-300 hover:bg-orange-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 border-r border-gray-300' :
-              'px-3 py-2 rounded-r-md flex items-center bg-orange-300 hover:bg-orange-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500'"
+              'px-3 py-2 flex items-center bg-orange-300 hover:bg-orange-400 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 border-r border-gray-300' :
+              'px-3 py-2 rounded-r-md flex items-center bg-orange-300 hover:bg-orange-400 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500'"
         >
 
             <span class="material-icons text-lg">backspace</span>
