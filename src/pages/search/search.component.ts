@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [ReactiveFormsModule, KeyValuePipe, TextFormatterPipe, NgClass],
   template: `
-    <div class="max-w-md mx-auto my-5 p-6 bg-white rounded-lg shadow-md">
+    <div class="max-w-md mx-auto my-5 p-6 bg-white rounded-lg shadow-md border-2 border-blue-100">
       <h2 class="text-xl font-bold mb-4 text-gray-800">Zoeken</h2>
 
       <!-- Video preview for barcode scanning -->
@@ -80,46 +80,44 @@ import { Subscription } from 'rxjs';
       }
     </div>
 
-    <div class="max-w-md mx-auto my-5 p-6 bg-white rounded-lg shadow-md">
-      @if (results.size > 1) {
-        <div class="mt-4">
-          <h3 class="text-lg font-semibold mb-2 text-gray-700">Results:</h3>
-          <ul class="bg-white rounded-md shadow-sm">
-            @for (item of results | keyvalue; track item.key) {
-              <li
-                (click)="selectItem(item.key)"
-                class="px-4 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-0"
-              >
-                {{ item.key }} - <span class="text-xs">{{ item.value[1] | textFormatter }}</span>
-              </li>
-            }
-          </ul>
-        </div>
-      }
+    @if (searchAttempted) {
+      <div class="max-w-md mx-auto my-5 p-6 bg-white rounded-lg shadow-md border-2 border-blue-100">
+        @if (results.size > 1) {
 
-      @if (results.size === 1) {
-        <div class="mt-4">
-          @for (item of results | keyvalue; track item.key) {
-            <h4 class="text-lg font-medium mb-2 text-blue-600">{{ item.key }}</h4>
-            <dl class="grid grid-cols-3 gap-x-4 gap-y-2">
-              @for (value of item.value; track $index) {
-                @if (headers[$index]) {
-                  <dt class="col-span-1 text-sm font-medium text-gray-600">{{ headers[$index] }}</dt>
-                  <dd class="col-span-2 text-sm text-gray-800">{{ value | textFormatter }}</dd>
-                }
+            <h3 class="text-lg font-semibold mb-2 text-gray-700">Resultaten:</h3>
+            <ul class="bg-white rounded-md ">
+              @for (item of results | keyvalue; track item.key) {
+                <li
+                  (click)="selectItem(item.key)"
+                  class="px-4 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-0 "
+                >
+                  {{ item.key }} - <span class="text-xs">{{ item.value[1] | textFormatter }}</span>
+                </li>
               }
-            </dl>
-          }
-        </div>
-      }
+            </ul>
+        }
 
-      @if (searchAttempted && results.size === 0) {
-        <div class="mt-4 px-4 py-2 text-gray-600">
-          No results found.
-        </div>
-      }
+        @if (results.size === 1) {
+            @for (item of results | keyvalue; track item.key) {
+              <h4 class="text-lg font-medium mb-2 text-blue-600">{{ item.key }}</h4>
+              <dl class="grid grid-cols-3 gap-x-4 gap-y-2">
+                @for (value of item.value; track $index) {
+                  @if (headers[$index]) {
+                    <dt class="col-span-1 text-sm font-medium text-gray-600">{{ headers[$index] }}</dt>
+                    <dd class="col-span-2 text-sm text-gray-800">{{ value | textFormatter }}</dd>
+                  }
+                }
+              </dl>
+            }
+        }
 
+        @if (searchAttempted && results.size === 0) {
+          <div class="mt-4 px-4 py-2 text-gray-600">
+            No results found.
+          </div>
+        }
     </div>
+    }
   `,
   styles: [`
     @keyframes border-flash {
