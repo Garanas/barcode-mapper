@@ -38,11 +38,14 @@ import { Subscription } from 'rxjs';
           >
         </div>
 
-          <button
-            type="button"
-            (click)="searchControl.reset()"
-            class="px-3 py-2 rounded-r-md flex items-center bg-orange-300 hover:bg-orange-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+        <button
+          type="button"
+          (click)="backspace()"
+          [class]="barcodeApiSupported ?
+              'px-3 py-2 flex items-center bg-orange-300 hover:bg-orange-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 border-r border-gray-300' :
+              'px-3 py-2 rounded-r-md flex items-center bg-orange-300 hover:bg-orange-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500'"
+        >
+
             <span class="material-icons text-lg">backspace</span>
           </button>
 
@@ -286,6 +289,17 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.results = new Map<string, string[]>();
       this.searchAttempted = false;
       this.cdr.detectChanges();
+    }
+  }
+
+  backspace() {
+    const value = this.searchControl.value;
+    if (!value) return;
+
+    if (value.length > 2) {
+      this.searchControl.setValue(value.slice(0, 2));
+    } else {
+      this.searchControl.setValue('');
     }
   }
 
