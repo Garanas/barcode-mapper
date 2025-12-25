@@ -68,10 +68,10 @@ export class CsvService {
   /**
    * Find items with identifiers that partially match the provided search term
    * @param partialId Partial identifier to search for
-   * @param limit Maximum number of results to return (default: 10)
+   * @param limit Maximum number of results to return (default: 5)
    * @returns Object containing matching items and headers
    */
-  findByPartialIdentifier(partialId: string, limit: number = 10): { headers: string[], matches: Map<string, string[]> } {
+  findByPartialIdentifier(partialId: string, limit: number = 5): { headers: string[], matches: Map<string, string[]> } {
     const matches = new Map<string, string[]>();
     const searchTerm = partialId.trim().toLowerCase();
     let matchCount = 0;

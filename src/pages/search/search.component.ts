@@ -88,7 +88,7 @@ import { Subscription } from 'rxjs';
                   (click)="selectItem(item.key)"
                   class="px-4 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-0 "
                 >
-                  {{ item.key }} - <span class="text-xs">{{ item.value[1] | textFormatter }}</span>
+                  {{ item.key }} - <span class="text-xs">{{ item.value[0] | textFormatter }}</span>
                 </li>
               }
             </ul>
@@ -278,7 +278,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.exactSearch = false;
       } else {
         // Regular search with limit of 10
-        const searchResults = this.csvService.findByPartialIdentifier(query, 10);
+        const searchResults = this.csvService.findByPartialIdentifier(query, 5);
         this.results = searchResults.matches;
         this.headers = searchResults.headers;
       }

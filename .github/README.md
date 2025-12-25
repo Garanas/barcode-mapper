@@ -4,6 +4,11 @@ Een website dat kan helpen bij het zoeken van product informatie op basis van ee
 
 In de praktijk zijn er winkels zonder een geavanceerd digitaal systeem. Wanneer er prijs wijzigingen moeten worden doorgevoerd, dan gebeurt dit met de hand. Dit is te overzien wanneer je winkel een gering aantal producten heeft, maar wordt al snel ingewikkeld wanneer er misschien wel honderden verschillende producten zijn. Deze website kan bijspringen in dit proces. De prijswijzigingen worden vaak in gestructureerde data doorgegeven, zoals een excel. Het is eenvoudig om daarvan een CSV te maken. Vervolgens kan je de csv-bestand inladen. Daarna kan je het csv-bestand doorzoeken, waarbij alle (extra) kolommen worden weergeven als gegevens.
 
+<video width="640" height="360" controls>
+  <source src="content/product-zoeker-01.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## Formaat van een CSV bestand
 
 De eerste kolom van een csv-bestand moet het product nummer bevatten. De tweede kolom komt terug in de zoekresultaten, het is handig als daar de naam staat. De overige kolommen komen terug wanneer er een enkel zoek resultaat is.
