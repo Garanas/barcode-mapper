@@ -1,15 +1,15 @@
 // app.ts
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NgClass } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { BarcodeDetectionService } from '../services/BarcodeDetectionService';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgClass],
+  imports: [RouterOutlet, NgClass, AsyncPipe],
   template: `
-    <div class="flex flex-col min-h-[100dvh]">
+    <div class="app-container flex flex-col">
       <!-- Header -->
       <header class="bg-gray-800 text-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
@@ -43,11 +43,19 @@ import { BarcodeDetectionService } from '../services/BarcodeDetectionService';
         <div class="max-w-7xl mx-auto px-4 py-3 sm:py-4">
           <div class="flex flex-col sm:flex-row justify-between items-center">
             <div class="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-0">
-              <div class="flex items-center px-2 py-1 rounded-full"
+              <div class="flex items-center px-2 py-1 rounded-full relative group"
                    [ngClass]="barcodeApiSupported ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'">
                 <span class="inline-block h-2 w-2 rounded-full mr-1"
                       [ngClass]="barcodeApiSupported ? 'bg-green-500' : 'bg-yellow-500'"></span>
                 {{ barcodeApiSupported ? 'Barcode API Ready' : 'Barcode API Not Supported' }}
+
+                <!-- Tooltip showing supported formats -->
+                <div *ngIf="barcodeApiSupported"
+                     class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-gray-800 text-white text-xs rounded shadow-lg w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  <div class="font-bold mb-1">Supported Formats:</div>
+                  <div>{{ supportedFormats | async }}</div>
+                  <div class="absolute w-2 h-2 bg-gray-800 transform rotate-45 left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2"></div>
+                </div>
               </div>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs sm:text-sm mt-2 sm:mt-0">
@@ -60,9 +68,15 @@ import { BarcodeDetectionService } from '../services/BarcodeDetectionService';
     </div>
   `,
   styles: [`
-    /* Additional fixes for mobile browsers */
+    /* Root container styling */
     :host {
       display: block;
+      height: 100%;
+    }
+
+    .app-container {
+      min-height: 100vh; /* Fallback */
+      min-height: 100dvh; /* Modern browsers */
       height: 100%;
     }
   `]
@@ -71,6 +85,7 @@ export class App implements OnInit {
   protected readonly title = signal('barcode-lookup');
   barcodeApiSupported = false;
   private barcodeService = inject(BarcodeDetectionService);
+  supportedFormats = this.barcodeService.getFormattedSupportedFormats();
 
   ngOnInit() {
     this.barcodeApiSupported = this.barcodeService.isSupported();

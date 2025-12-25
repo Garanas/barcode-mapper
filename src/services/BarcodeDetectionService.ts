@@ -1,6 +1,7 @@
 // src/services/BarcodeDetectionService.ts
 import { ElementRef, Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import {from, Observable, of, Subject} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ export class BarcodeDetectionService {
   private detector: any = null;
   private barcodeSubject = new Subject<string>();
   private mediaStream: MediaStream | null = null;
+  private supportedFormats: string[] = []; // Store supported formats
+
 
   constructor() {
     // Check if the Barcode Detection API is supported
@@ -20,7 +23,7 @@ export class BarcodeDetectionService {
     // Initialize the detector if supported
     if (this.isBarcodeDetectionSupported) {
       this.detector = new (window as any).BarcodeDetector({
-        formats: ['code_39', 'code_128', 'ean_13', 'ean_8', 'upc_a', 'upc_e', 'qr_code']
+        formats: ['ean_13', 'ean_8', 'upc_a']
       });
     }
   }
@@ -125,6 +128,59 @@ export class BarcodeDetectionService {
           requestAnimationFrame(() => this.detectBarcodes());
         }
       });
+  }
+
+  /**
+   * Retrieves the list of barcode formats supported by the browser
+   * @returns Observable with array of supported format strings
+   */
+  getSupportedFormats(): Observable<string[]> {
+    if (!this.isBarcodeDetectionSupported) {
+      return of([]);
+    }
+
+    // If we've already fetched the formats, return them
+    if (this.supportedFormats.length > 0) {
+      return of(this.supportedFormats);
+    }
+
+    // Otherwise, query the API for supported formats
+    return from((window as any).BarcodeDetector.getSupportedFormats()) as Observable<string[]>;
+  }
+
+  /**
+   * Returns a formatted string of supported formats for display
+   */
+  getFormattedSupportedFormats(): Observable<string> {
+    return this.getSupportedFormats().pipe(
+      catchError(() => of([])),
+      map(formats => {
+        if (!formats || formats.length === 0) {
+          return 'No formats supported';
+        }
+
+        // Format the list to be more human-readable
+        return formats.map(format => {
+          // Convert format names to more readable form
+          switch(format) {
+            case 'aztec': return 'Aztec';
+            case 'code_128': return 'Code 128';
+            case 'code_39': return 'Code 39';
+            case 'code_93': return 'Code 93';
+            case 'codabar': return 'Codabar';
+            case 'data_matrix': return 'Data Matrix';
+            case 'ean_13': return 'EAN-13';
+            case 'ean_8': return 'EAN-8';
+            case 'itf': return 'ITF';
+            case 'pdf417': return 'PDF417';
+            case 'qr_code': return 'QR Code';
+            case 'upc_a': return 'UPC-A';
+            case 'upc_e': return 'UPC-E';
+            default: return format.replace('_', ' ').toUpperCase();
+          }
+        }).join(', ');
+      })
+    );
   }
 
   /**
