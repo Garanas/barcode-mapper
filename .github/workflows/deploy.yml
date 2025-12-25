@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --base-href="/barcode-mapper/"
+        run: npm run build -- --base-href="/product-zoeker/"
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
