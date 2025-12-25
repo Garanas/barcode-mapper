@@ -2,7 +2,9 @@
 
 Een website dat kan helpen bij het zoeken van product informatie op basis van een product nummer of een barcode. De informatie waardoor gezocht wordt moet worden aangeleverd door de gebruiker. Dit werkt via een csv-bestand waarbij de eerste kolom het product nummer omvat waar op gezocht wordt. De overige kolommen bevatten relevante product informatie.
 
-In de praktijk zijn er winkels zonder een geavanceerd digitaal systeem. Wanneer er prijs wijzigingen moeten worden doorgevoerd, dan gebeurt dit met de hand. Dit is te overzien wanneer je winkel een gering aantal producten heeft, maar wordt al snel ingewikkeld wanneer er misschien wel honderden verschillende producten zijn. Deze website kan bijspringen in dit proces. De prijswijzigingen worden vaak in gestructureerde data doorgegeven, zoals een excel. Het is eenvoudig om daarvan een CSV te maken. Vervolgens kan je de csv-bestand inladen. Daarna kan je het csv-bestand doorzoeken, waarbij alle (extra) kolommen worden weergeven als gegevens.
+In de praktijk zijn er winkels zonder een geavanceerd digitaal systeem. Wanneer er prijs wijzigingen moeten worden doorgevoerd, dan gebeurt dit met de hand. Dit is te overzien wanneer je winkel een gering aantal producten heeft, maar wordt al snel ingewikkeld wanneer er misschien wel honderden verschillende producten zijn. 
+
+Deze project en bijbehorende website kan bijspringen in dit proces! De prijswijzigingen worden vaak in gestructureerde data doorgegeven, zoals een excel. Het is eenvoudig om daarvan een CSV te maken. Vervolgens kan je het csv-bestand inladen op de website. Daarna kan je het csv-bestand eenvoudig doorzoeken op de eerste kolom, waarbij alle (extra) kolommen worden weergeven in de zoekresultaten. Er is ondersteuning voor de [Barcode Detection API](https://developer.mozilla.org/en-US/docs/Web/API/Barcode_Detection_API), waardoor je scannend door de winkel kan lopen om de prijzen bij te werken.
 
 https://github.com/user-attachments/assets/4b726028-c9c0-4bff-adbb-59fa5ad4c7f4
 
